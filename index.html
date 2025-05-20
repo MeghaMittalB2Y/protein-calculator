@@ -88,8 +88,19 @@
       }
 
       const proteinGrams = (factor * weight).toFixed(1);
-      resultEl.textContent = `Recommended protein intake: ${proteinGrams} g/day`;
-    }
-  </script>
+resultEl.textContent = `Recommended protein intake: ${proteinGrams} g/day`;
+}
+</script>
+
+<!-- Downloadable PDF Guide Button -->
+<div style="margin-top: 1.5rem; text-align: center;">
+  <a href="/protein-sample-guide.pdf" target="_blank">
+    <button style="padding: 0.5rem 1rem; background-color: #FFD300; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
+      📄 See Sample Protein Guide
+    </button>
+  </a>
+</div>
+
 </body>
 </html>
+
