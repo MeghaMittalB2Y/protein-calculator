@@ -4,6 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Protein Intake Calculator</title>
+  <!-- Supabase Client -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script>
+  const supabase = supabase.createClient(
+    'https://cnogvkwkqfainrksyokh.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNub2d2a3drcWZhaW5ya3N5b2toIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc5MTI3NDgsImV4cCI6MjA2MzQ4ODc0OH0.I_ZxdJZbRPMCCkKM7T5TnxgP8KUSz53rONGPGjM_W-4'
+  );
+</script>
   <!-- Hotjar Tracking Code for https://tools.chefadoodle.com/ -->
 <script>
     (function(h,o,t,j,a,r){
@@ -37,6 +45,16 @@
 <body>
   <img src="/ChefaDoodle_Logo.PNG" alt="Chef-a-Doodle Logo" class="logo" />
   <h2>Protein Intake Calculator</h2>
+  <!-- 👇 LOGIN UI START -->
+<div id="login-box" style="margin-bottom: 1rem; text-align: center;">
+  <input type="email" id="email" placeholder="Enter your email" style="padding: 0.5rem; width: 60%; max-width: 250px;" />
+  <button onclick="loginWithEmail()">🔓 Login with Email</button>
+  <div style="margin-top: 1rem;">
+    <button onclick="loginWithGoogle()">🔐 Login with Google</button>
+  </div>
+</div>
+<p id="user-status" style="text-align: center;"></p>
+<!-- 👆 LOGIN UI END -->
 
   <label for="age">Age Group:</label>
   <select id="age">
@@ -102,8 +120,38 @@
       const proteinGrams = (factor * weight).toFixed(1);
 resultEl.textContent = `Recommended protein intake: ${proteinGrams} g/day`;
 }
-</script>
+<script>
+  async function loginWithEmail() {
+    const email = document.getElementById('email').value;
+    const { error } = await supabase.auth.signInWithOtp({ email });
+    if (error) {
+      alert("Login failed: " + error.message);
+    } else {
+      alert("Magic link sent! Check your inbox.");
+    }
+  }
 
+  async function loginWithGoogle() {
+    await supabase.auth.signInWithOAuth({ provider: 'google' });
+  }
+
+  async function checkUser() {
+    const { data: { user } } = await supabase.auth.getUser();
+    const statusEl = document.getElementById("user-status");
+    if (user) {
+      statusEl.innerHTML = `👋 Logged in as <b>${user.email}</b> <button onclick="logout()">Logout</button>`;
+      document.getElementById("login-box").style.display = "none";
+    }
+  }
+
+  async function logout() {
+    await supabase.auth.signOut();
+    window.location.reload();
+  }
+
+  checkUser();
+</script>
+  
 <!-- Downloadable PDF Guide Button -->
 <div style="margin-top: 1.5rem; text-align: center;">
   <a href="/protein-sample-guide.pdf" download>
