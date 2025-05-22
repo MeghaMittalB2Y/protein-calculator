@@ -137,16 +137,18 @@
   </script>
 
   <!-- Auth Logic -->
-  <script>
-    async function loginWithEmail() {
-      const email = document.getElementById('email').value;
-      const { error } = await supabaseClient.auth.signInWithOtp({ email });
-      if (error) {
-        alert("Login failed: " + error.message);
-      } else {
-        alert("Magic link sent! Check your inbox.");
-      }
+<script>
+  async function loginWithEmail() {
+    const email = document.getElementById('email').value;
+    const { error } = await supabaseClient.auth.signInWithOtp({ email });
+
+    if (error) {
+      console.error("Supabase OTP error:", error);
+      alert("Login failed: " + (error.message || JSON.stringify(error)));
+    } else {
+      alert("Magic link sent! Check your inbox.");
     }
+  }
 
     async function loginWithGoogle() {
       const { error } = await supabaseClient.auth.signInWithOAuth({ provider: 'google' });
