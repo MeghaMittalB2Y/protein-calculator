@@ -7,12 +7,12 @@
 
   <!-- Supabase Client -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script>
-    const supabase = supabase.createClient(
-      'https://cnogvkwkqfainrksyokh.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNub2d2a3drcWZhaW5ya3N5b2toIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc5MTI3NDgsImV4cCI6MjA2MzQ4ODc0OH0.I_ZxdJZbRPMCCkKM7T5TnxgP8KUSz53rONGPGjM_W-4'
-    );
-  </script>
+<script>
+  const supabaseClient = supabase.createClient(
+    'https://cnogvkwkqfainrksyokh.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNub2d2a3drcWZhaW5ya3N5b2toIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc5MTI3NDgsImV4cCI6MjA2MzQ4ODc0OH0.I_ZxdJZbRPMCCkKM7T5TnxgP8KUSz53rONGPGjM_W-4'
+  );
+</script>
 
   <!-- Hotjar Tracking Code -->
   <script>
@@ -140,7 +140,7 @@
   <script>
     async function loginWithEmail() {
       const email = document.getElementById('email').value;
-      const { error } = await supabase.auth.signInWithOtp({ email });
+      const { error } = await supabaseClient.auth.signInWithOtp({ email });
       if (error) {
         alert("Login failed: " + error.message);
       } else {
@@ -149,12 +149,12 @@
     }
 
     async function loginWithGoogle() {
-      const { error } = await supabase.auth.signInWithOAuth({ provider: 'google' });
+      const { error } = await supabaseClient.auth.signInWithOAuth({ provider: 'google' });
       if (error) alert("Google login failed: " + error.message);
     }
 
     async function checkUser() {
-      const { data: { user } } = await supabase.auth.getUser();
+      const { data: { user } } = await supabaseClient.auth.getUser();
       const statusEl = document.getElementById("user-status");
       if (user) {
         document.getElementById("login-box").style.display = "none";
@@ -166,7 +166,7 @@
     }
 
     async function logout() {
-      await supabase.auth.signOut();
+      await supabaseClient.auth.signOut();
       window.location.reload();
     }
 
